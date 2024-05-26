@@ -10,6 +10,9 @@ public class Entity {
     public int getLevel() {
         return this.level;
     }
+    public String getLevelName() {
+        return String.valueOf(this.level);
+    }
     protected void setExperience(int e) {
         this.experience = e;
     }
