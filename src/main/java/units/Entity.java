@@ -4,6 +4,19 @@ public class Entity {
     protected int level = 1;
     protected int experience = 1;
 
+    protected void setLevel(int l) {
+        this.level = l;
+    }
+    public int getLevel() {
+        return this.level;
+    }
+    protected void setExperience(int e) {
+        this.experience = e;
+    }
+    public int getExperience() {
+        return this.experience;
+    }
+
     public int getStrength() {
         return level * experience;
     }
