@@ -10,18 +10,21 @@ public class Entity {
     public int getLevel() {
         return this.level;
     }
-    public String getLevelName() {
-        return String.valueOf(this.level);
+    public String getLevelAsRank() {
+        return switch (this.level) {
+            case 1 -> "Private";
+            case 2 -> "Corporal";
+            case 3 -> "Captain";
+            case 4 -> "Major";
+            default -> "???";
+        };
     }
-    protected void setExperience(int e) {
+
+    public void setExperience(int e) {
         this.experience = e;
     }
     public int getExperience() {
         return this.experience;
-    }
-
-    public int getStrength() {
-        return level * experience;
     }
     public void addExperience() {
         experience++;
@@ -30,12 +33,18 @@ public class Entity {
         experience--;
     }
 
+    public int getStrength() {
+        return level * experience;
+    }
+
     public void move() {
         experience++;
 
         if (experience > level * 5) {
-            this.experience = experience - (level * 5);
+            this.level++;
+            this.experience = (level * 5) - experience;
         } else if (experience == level * 5) {
+            this.level++;
             this.experience = 1;
         }
     }

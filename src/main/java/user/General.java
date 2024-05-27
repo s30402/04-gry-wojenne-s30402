@@ -35,6 +35,7 @@ public class General {
                 throw new IllegalStateException("You don't have enough gold.");
             } else {
                 this.units.add(new Unit());
+                this.gold -= 10;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -45,7 +46,8 @@ public class General {
             if (this.gold < 10 * l) {
                 throw new IllegalStateException("You don't have enough gold.");
             } else {
-                this.units.add(new Unit());
+                this.units.add(new Unit(l));
+                this.gold -= 10 * l;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -58,6 +60,7 @@ public class General {
                     throw new IllegalStateException("You don't have enough gold.");
                 } else {
                     this.units.add(new Unit(l));
+                    this.gold -= 10 * l;
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -78,6 +81,34 @@ public class General {
 
         return list.toString();
     }
+
+    public String getUnitsByRanks() {
+
+        StringBuilder list = new StringBuilder("[");
+
+        for (Unit unit : this.units) {
+            list.append(unit.getLevelAsRank()).append(",");
+        }
+
+        list.deleteCharAt(list.length()-1);
+        list.append("]");
+
+        return list.toString();
+    }
+    public String getUnitsByRanksWithExperience() {
+
+        StringBuilder list = new StringBuilder("[");
+
+        for (Unit unit : this.units) {
+            list.append(unit.getLevelAsRank()).append("(").append(unit.getExperience()).append(")").append(",");
+        }
+
+        list.deleteCharAt(list.length()-1);
+        list.append("]");
+
+        return list.toString();
+    }
+
     public ArrayList<Unit> getUnits() {
         return this.units;
     }
@@ -160,6 +191,8 @@ public class General {
                 unit.addExperience();
             }
 
+            enemy.units.removeIf(unit -> unit.getExperience() <= 0);
+
         } else if (this.getPower() == enemy.getPower()) {
             this.units.remove(this.chooseRandom());
             enemy.units.remove(enemy.chooseRandom());
@@ -174,6 +207,7 @@ public class General {
                 unit.addExperience();
             }
 
+            this.units.removeIf(unit -> unit.getExperience() <= 0);
         }
     }
 }
