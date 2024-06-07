@@ -1,6 +1,8 @@
 package src.main.java.units;
 
-public class Entity {
+import java.io.Serializable;
+
+public class Entity implements Serializable {
     protected int level = 1;
     protected int experience = 1;
 
@@ -48,7 +50,8 @@ public class Entity {
             this.experience = 1;
         }
     }
-    public void log(String type) {}
-    public void log(String type, int n) {}
+    public String toString() {
+        return "Rank: " + this.getLevelAsRank() + ", Experience: " + experience;
+    }
 
 }

@@ -2,12 +2,14 @@ package src.main.java.user;
 
 import src.main.java.units.Unit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class General {
+public class General implements Serializable {
 
     private int gold;
+    private String name;
     private ArrayList<Unit> units;
 
     public General() {
@@ -15,6 +17,11 @@ public class General {
         setGold(500);
     }
 
+    public General(String name) {
+        this.units = new ArrayList<Unit>();
+        setGold(500);
+        setName(name);
+    }
 
     public void setGold(int g) {
         this.gold = g;
@@ -27,6 +34,10 @@ public class General {
     }
     public int getGold() {
         return gold;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void buyUnit() {
@@ -209,5 +220,17 @@ public class General {
 
             this.units.removeIf(unit -> unit.getExperience() <= 0);
         }
+    }
+
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Gold: ").append(gold).append("\n");
+        sb.append("Units: \n");
+        for (Unit unit : units) {
+            sb.append(unit.toString()).append("\n");
+        }
+        return sb.toString();
     }
 }
