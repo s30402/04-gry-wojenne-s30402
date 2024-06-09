@@ -1,5 +1,7 @@
 package src.main.java.user;
 
+import src.main.java.ReportManager;
+import src.main.java.units.Entity;
 import src.main.java.units.Unit;
 
 import java.io.Serializable;
@@ -39,6 +41,7 @@ public class General implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    public String getName() { return this.name; }
 
     public void buyUnit() {
         try {
@@ -147,6 +150,7 @@ public class General implements Serializable {
             } else {
                 for (Unit unit : this.units) {
                     unit.move();
+                    ReportManager.log(this, unit, ReportManager.Action.GAIN_EXPERIENCE);
                 }
             }
         } catch (Exception e) {
@@ -170,6 +174,7 @@ public class General implements Serializable {
             } else {
                 for (int i=0; i < size ; i++) {
                     units.get(i).move();
+                    ReportManager.log(this, i, ReportManager.Action.GAIN_EXPERIENCE);
                 }
             }
         } catch (Exception e) {
@@ -197,25 +202,43 @@ public class General implements Serializable {
 
             for (Unit unit : enemy.units) {
                 unit.subtractExperience();
+                if (unit.getExperience() <= 0) {
+                    ReportManager.log(enemy, unit, ReportManager.Action.DIED_IN_ACTION);
+                } else {
+                    ReportManager.log(enemy, unit, ReportManager.Action.LOST_EXPERIENCE);
+                }
             }
             for (Unit unit : this.units) {
                 unit.addExperience();
+                ReportManager.log(this, unit, ReportManager.Action.GAIN_EXPERIENCE);
             }
 
             enemy.units.removeIf(unit -> unit.getExperience() <= 0);
 
         } else if (this.getPower() == enemy.getPower()) {
-            this.units.remove(this.chooseRandom());
-            enemy.units.remove(enemy.chooseRandom());
+            int t = this.chooseRandom();
+            int e = enemy.chooseRandom();
+
+            ReportManager.log(this, t, ReportManager.Action.DIED_IN_ACTION);
+            ReportManager.log(this, e, ReportManager.Action.DIED_IN_ACTION);
+
+            this.units.remove(t);
+            enemy.units.remove(e);
         } else {
 
             this.giveGold(enemy);
 
             for (Unit unit : this.units) {
                 unit.subtractExperience();
+                if (unit.getExperience() <= 0) {
+                    ReportManager.log(this, unit, ReportManager.Action.DIED_IN_ACTION);
+                } else {
+                    ReportManager.log(this, unit, ReportManager.Action.LOST_EXPERIENCE);
+                }
             }
             for (Unit unit : enemy.units) {
                 unit.addExperience();
+                ReportManager.log(enemy, unit, ReportManager.Action.GAIN_EXPERIENCE);
             }
 
             this.units.removeIf(unit -> unit.getExperience() <= 0);

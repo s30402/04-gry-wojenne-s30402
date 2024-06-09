@@ -6,7 +6,7 @@ import src.main.java.user.General;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-public class Attack {
+public class TestAttack {
 
     @Test
     public void attackEnemyWithLowerPower() {
